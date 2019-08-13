@@ -19,9 +19,10 @@
 ## Environment Configuration
 
 ```
-DB_URL=mongodb://localhost -- url to mongodb client
-DB_PORT=27017   -- port on which db is listening to
-DB_NAME=forecast-data  -- database to be used
-APP_PORT=3001   -- port on which the server is running
+DB_URL    -- url to mongodb client
+DB_PORT   -- port on which db is listening to
+DB_NAME   -- database to be used
+APP_PORT  -- port on which the server is running
 
 ```
+#### ideally the **.env** shouldn't be saved in the git repo, i've added the file just for demo purpose
