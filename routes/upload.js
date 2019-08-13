@@ -3,20 +3,29 @@ const getEventEmitter = require('../utils/sendSSE');
 const writeToDb = require('../utils/writeToDb');
 const upload = require('../utils/fileUpload');
 const excelToJson = require('../utils/excelToJson');
-const deleteFile = require('../utils/deleteFile');
+const listCollections = require('../utils/listCollections');
 
 function uploadExcel(req, res) {
 
-    upload(req, res, function (err, filename, path) {
+    upload(req, res, function (err, filename, path, collectionName) {
         if (err) {
             res.json({ error_code: 1, error_desc: err.message });
             return;
         }
 
         const sendSSE = getEventEmitter();
-        excelToJson(filename, path)
+        const db = req.app.locals.collections
+        listCollections(db)
+            .then(names => {
+                console.log("names", names);
+                // list collections to check if the collection already exists
+                const col = names.find(collection => collection.name === collectionName);
+                if (col) {
+                    throw new Error('File Already Exists');
+                }
+                return excelToJson(filename, path)
+            })
             .then(result => {
-
                 console.log("REsult", result[0]);
                 const data = {
                     error: false,
@@ -26,8 +35,7 @@ function uploadExcel(req, res) {
 
                 //SSE denoting initialization of the writing to db
                 sendSSE('myEvent', data);
-                const db = req.app.locals.collections
-                return writeToDb(filename, result, db);
+                return writeToDb(filename, result, db, collectionName);
             })
             .then(result => {
                 // deleteFile(req.file.filename);
@@ -61,35 +69,3 @@ function uploadExcel(req, res) {
 }
 
 module.exports = uploadExcel;
-
-
-
-
-
-// function uploadData(req, res) {
-//     const sse = generateSSE();
-//     const client = req.app.locals.collections;
-//     const db = client.db('forecast-data');
-//     const fileName = req.body.fileName.substring(0, req.body.fileName.length - 4);
-//     const collection = db.collection(fileName);
-//     const data = req.body.data;
-//     sse('write', 'writing to database');
-//     collection.insertMany(data, (err, result) => {
-//         if (err) {
-//             console.log(err);
-//             sse('complete', 'Failed to write data to database');
-//             res.json({
-//                 error_code: 500,
-//                 error_desc: 'Insertion Failed'
-//             });
-//             return;
-//         }
-//         sse('complete', 'Completed writing to database');
-//         res.json({
-//             error_code: 0,
-//             msg: 'Success'
-//         });
-//     })
-// }
-
-// module.exports = uploadData;

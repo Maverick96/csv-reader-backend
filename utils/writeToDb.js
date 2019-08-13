@@ -1,7 +1,7 @@
-function write(filename, data, db) {
-    const fileName = filename.substring(0, filename.length - 4);
-    console.log("NEW data", data);
-    const collection = db.collection(fileName);
+function write(filename, data, db, collectionName) {
+
+    console.log("NEW coll", collectionName);
+    const collection = db.collection(collectionName);
     // delete collection if present
     return collection.insertMany(data);
 }

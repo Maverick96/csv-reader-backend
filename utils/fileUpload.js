@@ -8,9 +8,12 @@ function upload(req, res, cb) {
     let newName = '';
     let orgName = '';
     let saveTo = '';
+    let collectionName = '';
     const datetimestamp = Date.now();
-    busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+    busboy.on('file', function (fieldname, file, filename) {
         orgName = filename;
+        collectionName = fieldname;
+        console.log("FIELD ", fieldname);
         // create temp name to store the file
         newName = 'file' + '-' + datetimestamp + '.' + filename.split('.')[filename.split('.').length - 1];
         // path to where the file needs to be saved
@@ -21,7 +24,7 @@ function upload(req, res, cb) {
     busboy.on('finish', function () {
         console.log("Finish", orgName)
         setTimeout(function () {
-            cb(null, orgName, saveTo)
+            cb(null, orgName, saveTo, collectionName)
         },
             1000
         )
