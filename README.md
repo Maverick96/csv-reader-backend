@@ -14,13 +14,6 @@
 
 ## Start Server
 
-
-### Dev Mode
-
-> npm run dev
-
-## Production Mode
-
 > npm start
 
 ## Environment Configuration
