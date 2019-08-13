@@ -21,7 +21,7 @@ const listFile = require('./routes/listFiles');
 const bindClient = require('./routes/event').bindClient;
 
 // env variables
-const url = `${process.env.DB_URL}:${process.env.DB_PORT}`
+const url = `${process.env.DB_URL}:${process.env.DB_PORT}`;
 const port = process.env.APP_PORT;
 
 app.use(cors());
@@ -46,10 +46,11 @@ app.get('/event', bindClient);
 mongo.connect(url, (err, client) => {
     if (err) {
         console.error(err)
-        return
+        throw err;
     }
     // share mongo clinet to manage all requests
-    app.locals.collections = client.db('forecast-data');
+    app.locals.collections = client.db(process.env.DB_NAME);
+
     app.listen(port, () => console.log("server started at port " + port));
     // create a directory to store uploaded files
     (async () => {
