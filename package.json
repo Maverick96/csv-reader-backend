@@ -1,0 +1,25 @@
+{
+  "name": "order-summary-backend",
+  "version": "1.0.0",
+  "description": "Server with two routes: 1) upload - accepts .xls as input and stores in a mysql database. 2) fetch - returns data from a mysql db.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "NODE_PATH=. ./node_modules/.bin/nodemon app.js"
+  },
+  "author": "Harsh Pancholi",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "busboy": "^0.3.1",
+    "cors": "^2.8.5",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "mongodb": "^3.3.0-beta2",
+    "sse-channel": "^3.0.1",
+    "xlsx": "^0.14.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}
