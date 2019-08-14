@@ -18,8 +18,8 @@ function verifyData(data) {
     let row = {};
     for (let i = 0; i < data.length; i++) {
         row = data[i];
-        // 'Forecast' value should be positive
-        if (row['Forecast'] < 0) {
+        // 'Forecast' value should be positive && "Dates" should be a valid date
+        if (row['Forecast'] < 0 || isNaN(Date.parse(row['Dates']))) {
             return {
                 verified: false,
                 desc: "Values in columns are incorrect"
